@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: {{cookiecutter.component_id}}
+  description: "testing"
+  annotations:
+    github.com/project-slug: "testing"
+    backstage.io/techdocs-ref: url:"testing"
+    backstage.io/kubernetes-id: "testing"
+spec:
+  type: library
+  lifecycle: experimental
+  owner: catalog-info-owner

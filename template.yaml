@@ -1,0 +1,65 @@
+apiVersion: backstage.io/v1beta2
+kind: Template
+# some metadata about the template itself
+metadata:
+  name: v1beta2-demo-2
+  title: Test Action template 2
+  description: scaffolder v1beta2 template demo
+spec:
+  owner: backstage/techdocs-core
+  type: library
+
+  # these are the steps which are rendered in the frontend with the form input
+  parameters:
+    - title: Fill in some steps
+      required:
+        - name
+      properties:
+        name:
+          title: Project Name
+          type: string
+          description: Use hyphens for spaces.
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+
+  # here's the steps that are executed in series in the scaffolder backend
+  steps:
+    - id: fetch-base
+      name: Fetch Base
+      action: fetch:cookiecutter
+      input:
+        values:
+          component_id: '{{ parameters.name }}'
+          java_package_name: '{{ parameters.name|replace('-', '') }}'
+
+    - id: provision
+      name: Provisioning
+      action: github:repository_dispach
+      input:
+        event_type: provision-library
+        owner: fp-mt-test-org
+        repo: development-infrastructure
+        client_payload: '{"library_name":"{{ parameters.name }}"}'
+
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: 'This is {{ parameters.name }}'
+        repoUrl: 'github.com?owner=fp-mt-test-org&repo={{ parameters.name }}'
+        repoVisibility: public
+        
+
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: '{{ steps.publish.output.repoContentsUrl }}'
+        catalogInfoPath: '/catalog-info.yaml'
+
+  # some outputs which are saved along with the job for use in the frontend
+  output:
+    remoteUrl: '{{ steps.publish.output.remoteUrl }}'
+    entityRef: '{{ steps.register.output.entityRef }}'

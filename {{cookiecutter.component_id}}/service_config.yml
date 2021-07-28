@@ -1,0 +1,22 @@
+flex:
+  version: 0.5.6
+  workflows:
+    pull:
+      command: git fetch origin template && git fetch origin master
+    setup-dependencies:
+      command: pip3 install battenberg
+    setup-repo:
+      depends-on: setup-dependencies
+      command: default_branch=master template_name=template-v2-test github_base_url=https://github.com/fp-mt-test-org ./.ngif/setup-repo.sh
+    update-template:
+      depends-on:
+        - setup-dependencies
+        - pull
+      command: battenberg upgrade --no-input
+    build:
+      depends-on: setup-repo
+      command: ./scripts/build.sh
+    publish:
+      command: ./scripts/publish.sh
+service:
+  name: '{{cookiecutter.component_id}}'
