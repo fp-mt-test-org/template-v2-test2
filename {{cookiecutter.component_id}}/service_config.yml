@@ -7,7 +7,7 @@ flex:
       command: pip3 install battenberg
     setup-repo:
       depends-on: setup-dependencies
-      command: default_branch=master template_name=template-v2-test github_base_url=https://github.com/fp-mt-test-org ./.ngif/setup-repo.sh
+      command: default_branch=master template_name=template-v2-test2 github_base_url=https://github.com/fp-mt-test-org ./.ngif/setup-repo.sh
     update-template:
       depends-on:
         - setup-dependencies

@@ -1,6 +1,6 @@
 {
-    "template": "https://github.com/fp-mt-test-org/template-v2-test",
-    "component_id": "template-v2-test",
+    "template": "https://github.com/fp-mt-test-org/template-v2-test2",
+    "component_id": "template-v2-test2",
     "repo_owner": "fp-mt-test-org",
     "artifact_id": "{{ cookiecutter.component_id }}",
     "storePath": "https://github.com/{{ cookiecutter.repo_owner }}/{{ cookiecutter.component_id }}",
